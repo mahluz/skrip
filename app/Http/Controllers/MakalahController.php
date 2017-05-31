@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Validator;
 use App\Http\Requests;
 use App\Makalah;
@@ -14,6 +15,7 @@ use HTML2PDF;
 use DB;
 use PDO;
 use DateTime;
+use App\User;
 
 class MakalahController extends Controller
 {
@@ -44,25 +46,28 @@ class MakalahController extends Controller
         $makalah = null;
         if(Auth::user()->id_role==1){
             $makalah = DB::table('makalah as m')
+                ->join('users','m.dosen_id','=','users.id_user')
                 ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
                 ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
-                ->select("*","m.created_at as upload")
+                ->select("*","m.created_at as upload","users.name as dosen_name")
                 ->get();
         }
         else if(Auth::user()->id_role==2){
             $makalah = DB::table('makalah as m')
+                ->join('users','m.dosen_id','=','users.id_user')
                 ->join('dosen_makalah as e', 'e.id_makalah', '=', 'm.id_makalah')
                 ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
                 ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
-                ->select("*","m.created_at as upload")
+                ->select("*","m.created_at as upload","users.name as dosen_name")
                 ->where('e.id_user',Auth::user()->id_user)
                 ->get();
         }
         else if(Auth::user()->id_role==3){
             $makalah = DB::table('makalah as m')
+                ->join('users','m.dosen_id','=','users.id_user')
                 ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
                 ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
-                ->select("*","m.created_at as upload")
+                ->select("*","m.created_at as upload","users.name as dosen_name")
                 ->where([
                     ['m.id_user','!=',Auth::user()->id_user],
                     ['m.id_status','!=',0]
@@ -96,6 +101,7 @@ class MakalahController extends Controller
         }
         DB::connection()->setFetchMode(PDO::FETCH_CLASS);
 
+        // return $makalah;
         return view('makalah.makalah',['active' => $active, 'sub_judul' => 'Semua makalah', 'makalah' => $makalah]);
     }
 
@@ -115,8 +121,9 @@ class MakalahController extends Controller
         $active = array(
             'makalah' => 'active',
             );
-
-        return view('makalah.create',['active' => $active, 'sub_judul' => 'Tambah makalah']);
+        $dosen = User::where('id_role',2)->get();
+        // return $dosen;
+        return view('makalah.create',['active' => $active, 'sub_judul' => 'Tambah makalah','dosen'=>$dosen]);
     }
 
     /**
@@ -127,6 +134,8 @@ class MakalahController extends Controller
      */
     public function store(Request $request)
     {
+      // $request = Input::all();
+      // return $request;
         if(Auth::user()->id_role==2){
             return redirect('404');
         }
@@ -134,7 +143,7 @@ class MakalahController extends Controller
             return redirect('profile');
         }
         $this->validate($request, [
-            'kategori_makalah' => 'required',
+            'dosen' => 'required',
             'judul' => 'required',
             'abstrak' => 'required',
             'permasalahan' => 'required',
@@ -153,68 +162,11 @@ class MakalahController extends Controller
             'kesimpulan_sementara' => $request->kesimpulan_sementara,
             'daftar_pustaka' => $request->daftar_pustaka,
             'id_user' => Auth::user()->id_user,
-            'id_status' => '0'
+            'id_status' => '0',
+            'dosen_id' => $request->dosen
         ]);
 
-        foreach ($request->kategori_makalah as $value) {
-            $save = DB::table('kategori_makalah')->insert([
-                'id_makalah' => $makalah->id_makalah,
-                'id_kategori' => $value,
-            ]);
-        }
-
-        $plag = new Plagiarisme();
-        $set = DB::table('pengaturan')->first();
-        $forms = explode(",", $set->form);
-
-        $listmak = DB::table('makalah')
-            ->where([
-                ['id_status','!=',0],
-                ['id_makalah','!=',$makalah->id_makalah]
-            ])
-            ->get();
-
-        $waktu = date("Y-m-d H:i:s");
-        $makalah->id_status = 1;
-        foreach ($listmak as $mk) {
-            foreach ($forms as $form) {
-                $percen = $plag->detection($makalah->$form,$mk->$form);
-                if($percen>=$set->persen){
-                    DB::table('history_plagiat')->insert([
-                        'id_makalah_uji' => $makalah->id_makalah,
-                        'id_makalah_ref' => $mk->id_makalah,
-                        'form' => $form,
-                        'persentase' => $percen,
-                        'waktu' => $waktu
-                    ]);
-                    $makalah->id_status = 0;
-                }
-            }
-        }
-
-        $makalah->save();
-        $status=true;
-
-        if($makalah->id_status==0){
-
-            Timeline::create([
-                'id_user' => Auth::user()->id_user,
-                'aksi' => 'Melakukan penambahan makalah baru, namun terdeteksi plagiat!',
-                'href' => 'makalah/'.$makalah->id_makalah
-            ]);
-
-            return redirect('makalah/'.$makalah->id_makalah)->with('plagiat',true);
-        }
-        else if($makalah->id_status==1){
-
-            Timeline::create([
-                'id_user' => Auth::user()->id_user,
-                'aksi' => 'Melakukan penambahan makalah baru dan Lolos plagiat!',
-                'href' => 'makalah/'.$makalah->id_makalah
-            ]);
-
-            return redirect('lolos')->with('berhasil',$status?"berhasil":"gagal");
-        }
+        return redirect('makalah');
     }
 
     public function compare($id)
@@ -231,7 +183,7 @@ class MakalahController extends Controller
         $detail = DB::table('history_plagiat')
             ->where('id_plagiat',$id)
             ->first();
-        
+
         DB::connection()->setFetchMode(PDO::FETCH_ASSOC);
         $history_plagiat = DB::table('history_plagiat')
             ->where([
@@ -242,7 +194,7 @@ class MakalahController extends Controller
             ->get();
         $persentase = array_column($history_plagiat,'persentase','form');
         DB::connection()->setFetchMode(PDO::FETCH_CLASS);
-        
+
         $mak1 = DB::table('makalah as m')
             ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
             ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
@@ -305,10 +257,10 @@ class MakalahController extends Controller
         DB::connection()->setFetchMode(PDO::FETCH_CLASS);
 
         return view('makalah.compare',[
-            'active' => $active, 
-            'sub_judul' => 'Perbandingan makalah', 
-            'makalah1' => $mak1, 
-            'makalah2' => $mak2, 
+            'active' => $active,
+            'sub_judul' => 'Perbandingan makalah',
+            'makalah1' => $mak1,
+            'makalah2' => $mak2,
             'persentase' => $persentase
         ]);
     }
@@ -338,7 +290,7 @@ class MakalahController extends Controller
         $active = array(
             'makalah' => 'active',
             );
-        
+
         $mak = DB::table('makalah as m')
             ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
             ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
@@ -479,9 +431,9 @@ class MakalahController extends Controller
         }
 
         return view('makalah.show',[
-            'active' => $active, 
-            'sub_judul' => 'Detail', 
-            'makalah' => $mak, 
+            'active' => $active,
+            'sub_judul' => 'Detail',
+            'makalah' => $mak,
             'history_plagiat' => $history_plagiat,
             'km_read' => $km_read,
             'km_unread' => $km_unread,
@@ -508,7 +460,7 @@ class MakalahController extends Controller
         $active = array(
             'makalah' => 'active',
             );
-        
+
         $mak = DB::table('makalah as m')
             ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
             ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
@@ -541,7 +493,7 @@ class MakalahController extends Controller
             $mak->dosen2 = '';
         }
 		$content = view('makalah.pdf',[
-            'active' => $active, 
+            'active' => $active,
             'makalah' => $mak
         ])->render();
 
@@ -611,7 +563,7 @@ class MakalahController extends Controller
         $active = array(
             'makalah' => 'active',
             );
-        
+
         $mak = DB::table('makalah as m')
             ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
             ->leftjoin('status_makalah as s', 'm.id_status', '=', 's.id_status')
@@ -664,7 +616,7 @@ class MakalahController extends Controller
         if ($request->id_status==2) {
             return redirect("plotdosen/".$id);
         }
-        
+
         $makalah = Makalah::find($id);
         if (Auth::user()->id_role!=1 && $makalah->id_user!=Auth::user()->id_user) {
             return redirect('404');
@@ -703,7 +655,7 @@ class MakalahController extends Controller
 		if(!$plagiat){
 			$makalah->id_status = $makalah->id_status==0?1:$makalah->id_status;
 		}
-        
+
         $makalah->save();
         $status=true;
 
@@ -735,7 +687,7 @@ class MakalahController extends Controller
         $makalah = Makalah::find($id);
         $makalah->id_status="2";
         $status = $makalah->save();
-		
+
 		DB::table('dosen_makalah')
 			->where('id_makalah',$id)
 			->delete();
@@ -744,7 +696,7 @@ class MakalahController extends Controller
             ['id_user'=>$request->dosen_makalah1,'id_makalah'=>$id,'id_jenis_dosen'=>1],
             ['id_user'=>$request->dosen_makalah2,'id_makalah'=>$id,'id_jenis_dosen'=>2]
         ]);
-        
+
         Timeline::create([
             'id_user' => Auth::user()->id_user,
             'aksi' => 'Melakukan ploting dosen pada proposal',
@@ -771,7 +723,7 @@ class MakalahController extends Controller
             ->leftjoin('users as u1', 'm.id_user', '=', 'u1.id_user')
             ->where('m.id_makalah', $id)
             ->first();
-			
+
 		$dosen1 = DB::table("dosen_makalah")
 			->where([
 			["id_makalah",$id],
@@ -785,9 +737,9 @@ class MakalahController extends Controller
 			["id_jenis_dosen",2]
 			])
 			->first();
-		
-        $user = DB::table('users')->where('id_role',2)->get();		
-		
+
+        $user = DB::table('users')->where('id_role',2)->get();
+
 		foreach($user as $us){
 			if($dosen1 && $dosen2){
 				if($us->id_user == $dosen1->id_user){
@@ -804,7 +756,7 @@ class MakalahController extends Controller
 				$us->selected = "";
 			}
 		}
-        
+
         return view('makalah.plotdosen',['active' => $active, 'sub_judul' => 'Plot dosen', 'dosen' => $user, 'makalah' => $mak]);
     }
 

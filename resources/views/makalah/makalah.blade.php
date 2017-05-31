@@ -60,9 +60,7 @@
                           <tr>
                             <th>Mahasiswa</th>
                             <th>Judul</th>
-                            <th>Kategori</th>
-                            <th>Dosbing 1</th>
-                            <th>Dosbing 2</th>
+                            <th>Dosen</th>
 							<th>Waktu Upload</th>
                             <th>Status</th>
                             <th>Action</th>
@@ -73,9 +71,7 @@
                             <tr>
                               <td><a href="{{ url('profileuser/'.$mk->id_user) }}">{{ $mk->name }}</a></td>
                               <td>{{ $mk->judul }}</td>
-                              <td>{{ $mk->kategori }}</td>
-                              <td>{{ $mk->dosen1 }}</td>
-                              <td>{{ $mk->dosen2 }}</td>
+                              <td>{{$mk->dosen_name}}</td>
 							  <td>{{ date_format(date_create($mk->upload),"Y-m-d H:i:s") }}</td>
 
                                 @if($mk->status=='plagiat')
@@ -155,9 +151,7 @@
                           <tr>
                             <th>Mahasiswa</th>
                             <th>Judul</th>
-                            <th>Kategori</th>
-                            <th>Dosbing 1</th>
-                            <th>Dosbing 2</th>
+                            <th>Dosen</th>
 							<th>Waktu Upload</th>
                             <th>Status</th>
                             <th>Action</th>

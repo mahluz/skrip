@@ -18,6 +18,7 @@ class Makalah extends Model
 	    'kesimpulan_sementara',
 	    'daftar_pustaka',
 	    'id_user',
-	    'id_status'
+	    'id_status',
+      'dosen_id'
     ];
 }

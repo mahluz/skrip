@@ -42,13 +42,11 @@
                       {!! csrf_field() !!}
                       <div class="box-body">
                         <div class="form-group">
-                          <label for="judul">Kategori</label>
-                          <?php
-                        $katma = DB::table('kategori')->get();
-                        ?>
-                          <select required name="kategori_makalah[]" class="form-control select2" multiple="multiple" data-placeholder="Pilih kategori" style="width: 100%;">
-                            @foreach($katma as $kat)
-                              <option value="{{ $kat->id_kategori }}">{{ $kat->kategori }}</option>
+                          <label for="dosen">Dosen</label>
+                          <select class="form-control" name="dosen">
+                            <option value="">Pilih Dosen</option>
+                            @foreach ($dosen as $index => $ini)
+                              <option value="{{$ini->id_user}}">{{$ini->name}}</option>
                             @endforeach
                           </select>
                         </div><!-- /.form-group -->
