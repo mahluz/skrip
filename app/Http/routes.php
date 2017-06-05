@@ -94,3 +94,5 @@ Route::resource('materi','MateriController');
 Route::resource('tugas','TugasController');
 
 Route::resource('modul','ModulController');
+
+Route::resource('makul','MakulController');

@@ -20,6 +20,9 @@
   {{ Auth::user()->name }}
 @endsection
 
+@section('mataKuliah','class=active')
+@section('inputModul','class=active')
+
 @section('content')
             <section class="content-header">
               <h1>

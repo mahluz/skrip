@@ -5,10 +5,12 @@
 @endsection
 
 @section('body')
-  <body class="hold-transition login-page">
+  <body class="hold-transition login-page" style="background-image:url({{url('images/background.jpg')}});background-size:cover;">
     <div class="login-box">
       <div class="login-logo">
-        <a href=""><b>Central Digital Learning Teknik Kimia </b> <br>Ver. 2 Beta</a>
+        <div class="well well-lg">
+          Central Digital Learning Teknik Kimia
+        </div>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Login dengan akun anda</p>

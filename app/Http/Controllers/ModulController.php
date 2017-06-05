@@ -37,8 +37,8 @@ class ModulController extends Controller
 		   ->leftjoin('mata_kuliah as n', 'm.id_makul', '=', 'n.id_makul')
            ->select("*")
             ->get();
-		
-		
+
+
 
         return view('modul.modul',['active' => $active, 'modul_pembelajaran' => $modul_pembelajaran]);
     }
@@ -60,11 +60,11 @@ class ModulController extends Controller
 
 			$mata_kuliah = DB::table('mata_kuliah')->select('*')->get();
 			$users = DB::table('users as a')
-			->leftjoin('role as b', 'a.id_role' ,'=', 'b.id_role') 
+			->leftjoin('role as b', 'a.id_role' ,'=', 'b.id_role')
 			->select("*")
 			->where('a.id_role',2)
             ->get();
-			
+
 
         return view('modul.create', compact('kode_makul', 'mata_kuliah', 'users', 'name'),['active' => $active, 'sub_judul' => 'Input Modul']);
     }
@@ -84,9 +84,9 @@ class ModulController extends Controller
             'nama_modul' => 'required|max:255',
             'id_makul' => 'required|max:255|',
             'no_id' => 'required|max:255',
-            'file' => 'required|max:255',
+            'file' => 'required',
         ]);
-		
+
 		$path = public_path('upload/file');
         $input = $request->except('file');
         $upload = new Modul();
@@ -100,7 +100,7 @@ class ModulController extends Controller
                 return redirect('modul')->with('berhasil',$upload?"berhasil":"gagal");
             };
         }
-			
+
 		/*$path = public_path('upload/file');
         $input = $request->except('file');
         $modul_pembelajaran = Modul::create([
@@ -109,9 +109,9 @@ class ModulController extends Controller
             'no_id' => $request->no_id,
 			'modul' => $request->nama_modul,
             $request->file('file')->move($path, $input),
-			       
+
         ]);
-		
+
 
         Timeline::create([
             'id_user' => Auth::user()->id_user,
@@ -119,9 +119,9 @@ class ModulController extends Controller
             'href' => 'modul/'.$modul_pembelajaran->id_modul
         ]);
 		*/
-		
+
         //return redirect('modul')->with('berhasil',$modul_pembelajaran?"berhasil":"gagal");
-		
+
     }
 
     /**
@@ -142,8 +142,8 @@ class ModulController extends Controller
         $user = User::find($id);
 
         return view('mahasiswa.show',[
-            'active' => $active, 
-            'user' => $user, 
+            'active' => $active,
+            'user' => $user,
             'sub_judul' => 'Detail tugas'
             ]);
     }
@@ -167,8 +167,8 @@ class ModulController extends Controller
         $user = User::find($id);
 
         return view('mahasiswa.edit',[
-            'active' => $active, 
-            'user' => $user, 
+            'active' => $active,
+            'user' => $user,
             'sub_judul' => 'Edit Tugas'
             ]);
     }
@@ -185,7 +185,7 @@ class ModulController extends Controller
         if (Auth::user()->id_role!=1) {
             return redirect('404');
         }
-        
+
         $old = User::find($id);
         if ($request->no_id != $old->no_id) {
             $user = DB::table('users')
@@ -198,7 +198,7 @@ class ModulController extends Controller
                 return redirect("mahasiswa/".$id."/edit")->withErrors(['no_id' => 'Nomor pegawai sudah digunakan']);
             }
         }
-        
+
         if(isset($request->password)){
             $this->validate($request, [
                 'password' => 'required|min:6|confirmed'
@@ -207,12 +207,12 @@ class ModulController extends Controller
 
         $user = User::find($id);
         $status = $user->update($request->all());
-        
+
         if(isset($request->password)){
             $user->password = bcrypt($request->password);
             $user->save();
         }
-        
+
         Timeline::create([
             'id_user' => Auth::user()->id_user,
             'aksi' => 'Melakukan perubahan data mahasiswa',

@@ -20,6 +20,9 @@
   {{ Auth::user()->name }}
 @endsection
 
+@section('mataKuliah','class=active')
+@section('inputMakul','class=active')
+
 @section('content')
             <section class="content-header">
               <h1>
@@ -73,7 +76,7 @@
                           @endif
                           <input type="text" required name="sks" class="form-control" id="sks" placeholder="SKS" value="{{ old('sks') }}">
                         </div>
-						
+
                       </div><!-- /.box-body -->
                       <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-save"></i></button>

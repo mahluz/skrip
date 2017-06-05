@@ -26,6 +26,102 @@
         <link rel="stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker-bs3.css') }}">
         <!-- bootstrap wysihtml5 - text dosen -->
         <link rel="stylesheet" href="{{ asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css') }}">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+        <style media="screen">
+          .carousel-inner,.carousel,.item,.container,.fill {
+           height:100%;
+           width:100%;
+           background-position:center center;
+           background-size:cover;
+          }
+          .slide-wrapper{display:inline;}
+          .slide-wrapper .container{padding:0px;}
+
+          /*------------------------------ vertical bootstrap slider----------------------------*/
+
+          .carousel-inner> .item.next ,  .carousel-inner > .item.active.right{ transform: translateY(100%); -webkit-transform: translateY(100%); -ms-transform: translateY(100%);
+          -moz-transform: translateY(100%); -o-transform: translateY(100%);  top: 0;left:0;}
+          .carousel-inner > .item.prev ,.carousel-inner > .item.active.left{ transform: translateY(-100%); -webkit-transform: translateY(-100%);  -moz-transform: translateY(-100%);
+          -ms-transform: translateY(-100%); -o-transform: translateY(-100%); top: 0; left:0;}
+          .carousel-inner > .item.next.left , .carousel-inner > .item.prev.right , .carousel-inner > .item.active{transform:translateY(0); -webkit-transform:translateY(0);
+          -ms-transform:translateY(0);-moz-transform:translateY(0); -o-transform:translateY(0); top:0; left:0;}
+
+          /*------------------------------- vertical carousel indicators ------------------------------*/
+          .carousel-indicators{
+          position:absolute;
+          top:0;
+          bottom:0;
+          margin:auto;
+          height:20px;
+          right:10px; left:auto;
+          width:auto;
+          }
+          .carousel-indicators li{display:block; margin-bottom:5px; border:1px solid #00a199; }
+          .carousel-indicators li.active{margin-bottom:5px; background:#00a199;}
+          /*-------- Animation slider ------*/
+
+          .animated{
+           animation-duration:3s;
+           -webkit-animation-duration:3s;
+           -moz-animation-duration:3s;
+           -ms-animation-duration:3s;
+           -o-animation-duration:3s;
+           visibility:visible;
+           opacity:1;
+           transition:all 0.3s ease;
+          }
+          .carousel-img{
+            display: inline-block;
+             margin: 0 auto;
+             width: 100%;
+             text-align: center;
+           }
+          .item img{margin:auto;visibility:hidden; opacity:0; transition:all 0.3s ease; -webkit-transition:all 0.3s ease; -moz-transition:all 0.3s ease; -ms-transition:all 0.3s ease; -o-transition:all 0.3s ease;}
+          .item1 .carousel-img img , .item1.active .carousel-img img{max-height:300px;}
+          .item1.active .carousel-img img.animated{visibility:visible; opacity:1; transition:all 1s ease; -webkit-transition:all 1s ease; -moz-transition:all 1s ease; -ms-transition:all 1s ease; -o-transition:all 1s ease;
+          animation-duration:2s; -webkit-animation-duration:2s; -moz-animation-duration:2s; -ms-animation-duration:2s; -o-animation-duration:2s; animation-delay:0.3s ; -webkit-animation-delay:0.3s;
+          -moz-animation-delay:0.3s;-ms-animation-delay:0.3s; }
+          .item .carousel-desc{color:#fff; text-align:center;}
+          .item  h2{font-size:50px; animation-delay:1.5s;animation-duration:1s; }
+          .item  p{animation-delay:2.5s;animation-duration:1s; width:50%; margin:auto;}
+
+          .item2 .carousel-img img , .item2.active .carousel-img img{max-height:300px;}
+          .item2.active .carousel-img img.animated{visibility:visible; opacity:1; transition:all 0.3s ease; animation-duration:3s; animation-delay:0.3s}
+          .item2 h2 , item2.active h2{visibility:hidden; opacity:0; transition:all 5s ease;}
+          .item2.active h2.animated{visibility:visible; opacity:1;  animation-delay:3s;}
+
+          .item .fill{padding:0px 30px; display:table; }
+          .item .inner-content{display: table-cell;vertical-align: middle;}
+          .item3 .col-md-6{float:none; display:inline-block; vertical-align:middle; width:49%;}
+
+          .item3.active .carousel-img img.animated{visibility:visible; opacity:1; transition:all 0.3s ease; animation-duration:2s; animation-delay:0.3s}
+          .item3 h2 , item3.active h2{visibility:hidden; opacity:0; transition:all 5s ease; }
+          .item.item3 .carousel-desc{text-align:left;}
+          .item3.active h2.animated{visibility:visible; opacity:1;  animation-delay:1.5s}
+          .item3 p , item3.active p{visibility:hidden; opacity:0; transition:all 5s ease; width:100%;  }
+          .item3.active p.animated{visibility:visible; opacity:1;  animation-delay:2.5s;}
+
+          @media(max-width:991px)
+          {
+           .item .carousel-desc , .item.item3 .carousel-desc{text-align:center;}
+           .item .carousel-desc p {width:80%;}
+           .item3 .col-md-6{width:100%; text-align:center;}
+          }
+          @media(max-width:768px)
+          {
+          .item .carousel-img img, .item.active .carousel-img img{max-height:155px;}
+          .item  h2{font-size:30px; margin-top:0px;}
+          .item .carousel-desc p{width:100%; font-size:12px;}
+          }
+          @media(max-width:480px)
+          {
+          .item  h2{font-size:30px;}
+          .item .carousel-desc p{width:100%;}
+          }
+        </style>
+
 @endsection
 
 @section('name')
@@ -33,303 +129,94 @@
 @endsection
 
 @section('content')
-            <section class="content-header">
-              <h1>
-                Dashboard
-                <small>SKripsi akan dianggap <span class="badge bg-orange">Plagiat</span> jika terdapat kemiripan dengan skripsi lain sebesar <span class="badge bg-red">>={{ $persentase }}%</span> pada bagian form <span class="badge bg-green">{{ $form_makalah }}</span></small>
-              </h1>
-            </section>
+  <div class="container">
 
-            <!-- Main content -->
-            <section class="content">
-              <!-- Small boxes (Stat box) -->
-              <div class="row">
-                @if(Auth::user()->id_role!=2)
-                <div class="col-lg-6 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-orange">
-                    <div class="inner">
-                      <h3>{{ $n_plagiat or "0"}}</h3>
-                      <p>Terdeteksi Plagiat</p>
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-alert-circled"></i>
-                    </div>
-                    <a href="{{url('/plagiat')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div><!-- ./col -->
-                <div class="col-lg-6 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-green">
-                    <div class="inner">
-                      <h3>{{ $n_lolos or "0" }}</h3>
-                      <p>Lolos Plagiat</p>
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-log-out"></i>
-                    </div>
-                    <a href="{{url('/lolos')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div><!-- ./col -->
-                @endif
-                <div class="col-lg-4 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-aqua">
-                    <div class="inner">
-                      <h3>{{ $n_diterima or "0" }}</h3>
-                      <p>Skripsi diterima</p>
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-checkmark-circled"></i>
-                    </div>
-                    <a href="{{url('/diterima')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div><!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-yellow">
-                    <div class="inner">
-                      <h3>{{ $n_revisi or "0" }}</h3>
-                      <p>Skripsi Revisi</p>
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-edit"></i>
-                    </div>
-                    <a href="{{url('/revisi')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div><!-- ./col -->
-                <div class="col-lg-4 col-xs-6">
-                  <!-- small box -->
-                  <div class="small-box bg-red">
-                    <div class="inner">
-                      <h3>{{ $n_ditolak or "0" }}</h3>
-                      <p>Skripsi ditolak</p>
-                    </div>
-                    <div class="icon">
-                      <i class="ion ion-close-circled"></i>
-                    </div>
-                    <a href="{{url('/ditolak')}}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-                  </div>
-                </div><!-- ./col -->
-              </div><!-- /.row -->
-              <!-- Main row -->
-              <div class="row">
-                <!-- Left col -->
-                <section class="col-lg-7 connectedSortable">
+    <!-- Page Heading -->
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Beranda
+            </h1>
+            <ol class="breadcrumb">
+                <li class="active">
+                    <i class="fa fa-dashboard"></i> <a href="{{url('admin/dashboard')}}">Beranda</a>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <!-- /.row -->
 
-                  <!-- Calendar -->
-                  <div class="box box-success">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Timeline</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                      <!-- The timeline -->
-                      <ul class="timeline timeline-inverse">
-                        <?php 
-                        $date = "";
+    <section class="slide-wrapper">
+        <div class="container">
+            <div id="myCarousel" class="carousel slide">
+                <!-- Indicators -->
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                 </ol>
 
-						$i=0;
-                        foreach ($timeline as $tl) {
-                          if ($tl->tanggal!=$date) {
-							switch($i%6){
-								case 0: $warna = "green"; break;
-								case 1: $warna = "yellow"; break;
-								case 2: $warna = "red"; break;
-								case 3: $warna = "blue"; break;
-								case 4: $warna = "orange"; break;
-								case 5: $warna = "aqua"; break;
-							}
-							$i++;
-                        ?>
-                        <!-- timeline time label -->
-                        <li class="time-label">
-						  <span class="bg-{{ $warna }}">
-                            {{ date_format(date_create($tl->tanggal),"M j") }}<sup>{{ date_format(date_create($tl->tanggal),"S") }}</sup>, {{ date_format(date_create($tl->tanggal),"Y") }}
-                          </span>
-                        </li>
-                        <!-- /.timeline-label -->
-                        <?php
-                            $date = $tl->tanggal;
-                          }
-                          if(strpos($tl->aksi, "dosen")>-1 || strpos($tl->aksi, "penulis")>-1 || strpos($tl->aksi, "password")>-1 || strpos($tl->aksi, "profil")>-1 || strpos($tl->aksi, "registrasi")>-1){
-                            $class = "fa-user bg-aqua";
-                          }
-                          else if(strpos($tl->aksi, "pengaturan")>-1){
-                            $class = "fa-cog bg-red";
-                          }
-                          else if(strpos($tl->aksi, "kategori")>-1){
-                            $class = "fa-bars bg-blue";
-                          }
-                          else if(strpos($tl->aksi, "Mengomentari")>-1){
-                            $class = "fa-comments bg-yellow";
-                          }
-                          else if(strpos($tl->aksi, "skripsi")>-1){
-                            $class = "fa-book bg-green";
-                          }
-                        ?>
-                        <!-- timeline item -->
-                        <li>
-                        <i class="fa {{ $class }}"></i>
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> {{ $tl->waktu }}</span>
-                          @if(Auth::user()->id_role==1)
-                          <h3 class="timeline-header no-border">@if(Auth::user()->id_user!=$tl->id_user)<a href="{{ url(($tl->id_role==2?'dosen':'penulis').'/'.$tl->id_user) }}">{{ ucwords($tl->name) }}</a> @else Anda @endif{{ $tl->aksi }}. @if(isset($tl->href)) <a href="{{ url($tl->href) }}">Details</a> @endif</h3>
-                          @else
-                          <h3 class="timeline-header no-border">Anda {{ $tl->aksi }}. @if(isset($tl->href)) <a href="{{ url($tl->href) }}">Details</a> @endif</h3>
-                          @endif
-                        </div>
-                      </li>
-                        <!-- END timeline item -->
-                        <?php
-                        }
-                        ?>
-                        <li onclick="window.location.href='{{ url('profile/timeline') }}'">
-                          <i class="fa bg-gray" style="cursor:pointer"><strong>...</strong></i>
-                        </li>
-                      </ul>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-
-                </section><!-- /.Left col -->
-                <!-- right col (We are only adding the ID to make the widgets sortable)-->
-                <section class="col-lg-5 connectedSortable">
-                  <!-- Custom tabs (Charts with tabs)-->
-                  <div class="box box-success">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Summary</h3>
-                    </div>
-                    <div class="box-body">
-                      <div class="chart">
-                        <canvas id="barChart" style="height:230px"></canvas>
-                      </div>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-
-                </section><!-- right col -->
-              </div><!-- /.row (main row) -->
-              <div class="row">
-                <div class="col-xs-12">
-                  <div class="box">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">10 Skripsi terbaru</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                      <table id="tabel_makalah" class="table table-bordered table-striped">
-                        <thead>
-                          <tr>
-                            <th>Penulis</th>
-                            <th>Judul</th>
-                            <th>Kategori</th>
-                            <th>dosen Utama</th>
-                            <th>dosen Pengembang</th>
-							<th>Waktu Upload</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          @foreach($makalah as $mk)
-                            <tr>
-                              <td><a href="{{ url('profileuser/'.$mk->id_user) }}">{{ $mk->name }}</a></td>
-                              <td>{{ $mk->judul }}</td>
-                              <td>{{ $mk->kategori }}</td>
-                              <td>{{ $mk->dosen1 }}</td>
-                              <td>{{ $mk->dosen2 }}</td>
-							  <td>{{ date_format(date_create($mk->upload),"Y-m-d H:i:s") }}</td>
-
-                                @if($mk->status=='plagiat')
-                                <?php $warna='orange'; ?>
-                                @elseif($mk->status=='lolos')
-                                <?php $warna='green'; ?>
-                                @elseif($mk->status=='diterima')
-                                <?php $warna='blue'; ?>
-                                @elseif($mk->status=='revisi')
-                                <?php $warna='yellow'; ?>
-                                @elseif($mk->status=='ditolak')
-                                <?php $warna='red'; ?>
-                                @endif
-
-                              @if(Auth::user()->id_role == 1 && ($mk->status=='lolos' || $mk->status=='revisi'))
-                              <td>
-                                <div class="btn-group">
-                                  <button type="button" class="btn btn-xs bg-{{ $warna }}">{{ ucfirst($mk->status) }}</button>
-                                  <button type="button" class="btn btn-xs bg-{{ $warna }} dropdown-toggle" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                    <span class="sr-only">Toggle Dropdown</span>
-                                  </button>
-                                  <ul class="dropdown-menu" role="menu">
-                                    {!!Form::model($mk, [
-                                      "method" => "patch",
-                                      "route" => ["makalah.update",$mk->id_makalah],
-                                      "id" => "formid".$mk->id_makalah
-                                    ])!!}
-                                    {!! Form::hidden('id_status',$mk->id_status,array('id' => 'id_status'.$mk->id_makalah)) !!}
-                                    {!! Form::close() !!}
-                                    @if($mk->status!="diterima")
-                                      <li><a class="btn bg-blue" href="#" onclick="if(confirm('Anda yakin akan mengubah status skripsi {{ $mk->id_makalah }} DITERIMA?\nPerubahan ini tidak bisa dikembalikan!')){$('#id_status{{$mk->id_makalah}}').val(2);$('#formid{{$mk->id_makalah}}').submit();}">Diterima</a></li>
-                                    @endif
-                                    @if($mk->status!="revisi")
-                                      <li><a class="btn bg-yellow" href="#" onclick="if(confirm('Anda yakin akan mengubah status skripsi {{ $mk->id_makalah }} REVISI?')){$('#id_status{{$mk->id_makalah}}').val(3);$('#formid{{$mk->id_makalah}}').submit();}">Revisi</a></li>
-                                    @endif
-                                    @if($mk->status!="ditolak")
-                                      <li><a class="btn bg-red" href="#" onclick="if(confirm('Anda yakin akan mengubah status skripsi {{ $mk->id_makalah }} DITERIMA?\n
-
- ini tidak bisa dikembalikan!')){$('#id_status{{$mk->id_makalah}}').val(4);$('#formid{{$mk->id_makalah}}').submit();}">Ditolak</a></li>
-                                    @endif
-                                  </ul>
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner">
+                    <div class="item item1 active">
+                        <div class="fill" style=" background-color:#48c3af;">
+                            <div class="inner-content">
+                                <div class="carousel-img">
+                                    <img src="{{url('images/logo_2.png')}}" alt="sofa" class="img img-responsive" />
                                 </div>
-                              </td>
-                              @else
-                              <td>
-                                <!-- <span class="label bg-{{ $warna }}">{{ ucfirst($mk->status) }}</span> -->
-                                <button type="button" class="btn btn-xs bg-{{ $warna }}">{{ ucfirst($mk->status) }}</button>
-                              </td>
-                              @endif
-                              <td>
-                                @if(Auth::user()->id_role==1)
-                                {!! Form::open([
-                                    'method' => 'delete',
-                                    'route' => ['makalah.destroy',$mk->id_makalah],
-                                    'id' => 'formdelete'.$mk->id_makalah
-                                ]) !!}
-                                {!!Form::close()!!}
-                                <a title="Download skripsi{{ $mk->id_makalah }}.pdf" class="btn btn-xs btn-default" target="_blank" href="{{ url('makalah/'.$mk->id_makalah.'/pdf') }}"><i class="fa fa-file-pdf-o"></i></a>
-                                <a title="Detail" class="btn btn-xs btn-default" href="{{ url('makalah/'.$mk->id_makalah) }}"><i class="fa fa-search"></i></a>
-                                <a title="Edit" class="btn btn-xs btn-default" href="{{ url('makalah/'.$mk->id_makalah.'/edit') }}"><i class="fa fa-edit"></i></a>
-                                <a title="Delete" class="btn btn-xs btn-default" href="#" onclick="if(confirm('Apakah anda yakin akan menghapus skripsi {{ $mk->id_makalah }}?')){ $('#formdelete{{$mk->id_makalah}}').submit(); }"><i class="fa fa-close"></i></a>
-								@if($mk->status=='diterima')
-								<a title="Plot dosen" class="btn btn-xs btn-default" href="{{ url('plotdosen/'.$mk->id_makalah) }}">plot dosen</a>
-								@endif
-                                @elseif(Auth::user()->id_role==3 && Auth::user()->id_user==$mk->id_user)
-                                <a title="Download skripsi{{ $mk->id_makalah }}.pdf" class="btn btn-xs btn-default" target="_blank" href="{{ url('makalah/'.$mk->id_makalah.'/pdf') }}"><i class="fa fa-file-pdf-o"></i></a>
-                                <a title="Detail" class="btn btn-xs btn-default" href="{{ url('makalah/'.$mk->id_makalah) }}"><i class="fa fa-search"></i></a>
-                                <a title="Edit" class="btn btn-xs btn-default" href="{{ url('makalah/'.$mk->id_makalah.'/edit') }}"><i class="fa fa-edit"></i></a>
-                                @else
-                                <a title="Download skripsi{{ $mk->id_makalah }}.pdf" class="btn btn-xs btn-default" target="_blank" href="{{ url('makalah/'.$mk->id_makalah.'/pdf') }}"><i class="fa fa-file-pdf-o"></i></a>
-                                <a title="Detail" class="btn btn-xs btn-default" href="{{ url('makalah/'.$mk->id_makalah) }}"><i class="fa fa-search"></i></a>
-                                @endif
-                              </td>
-                            </tr>
-                          @endforeach
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <th>Penulis</th>
-                            <th>Judul</th>
-                            <th>Kategori</th>
-                            <th>dosen Utama</th>
-                            <th>dosen Pengembang</th>
-							<th>Waktu Upload</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-                </div><!-- /.col -->
-              </div><!-- /.row -->              
-            </section>
+                                <div class="carousel-desc">
+
+                                    <h2>Selamat Datang</h2>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elit ipsum, scelerisque non semper eu, aliquet vel odio. Sed auctor id purus nec tristique. Donec euismod, urna vel dapibus tristique, dolor arcu ultrices lectus, nec pulvinar est turpis sit amet felis. Duis interdum purus quam, vitae cursus erat ornare at. Donec congue mi a ipsum tincidunt, imperdiet vehicula odio rutrum. Nam porta vulputate magna, id pretium lectus iaculis eu. Ut ut viverra libero.</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item item2">
+                        <div class="fill" style="background-color:#b33f4a;">
+                            <div class="inner-content">
+                                <div class="carousel-img">
+                                    <img src="{{url('images/logo_3.png')}}" alt="white-sofa" class="img img-responsive" />
+                                </div>
+                                <div class="carousel-desc">
+
+                                    <h2>About</h2>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elit ipsum, scelerisque non semper eu, aliquet vel odio. Sed auctor id purus nec tristique. Donec euismod, urna vel dapibus tristique, dolor arcu ultrices lectus, nec pulvinar est turpis sit amet felis. Duis interdum purus quam, vitae cursus erat ornare at. Donec congue mi a ipsum tincidunt, imperdiet vehicula odio rutrum. Nam porta vulputate magna, id pretium lectus iaculis eu. Ut ut viverra libero.</p>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="item item3">
+                        <div class="fill" style="background-color:#7fc2f4;">
+                            <div class="inner-content">
+                                <div class="col-md-6">
+
+                                    <div class="carousel-img">
+                                        <img src="{{url('images/logo_4.png')}}" alt="sofa" class="img img-responsive" />
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 text-left">
+                                    <div class="carousel-desc">
+
+                                        <h2>How to ?</h2>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis elit ipsum, scelerisque non semper eu, aliquet vel odio. Sed auctor id purus nec tristique. Donec euismod, urna vel dapibus tristique, dolor arcu ultrices lectus, nec pulvinar est turpis sit amet felis. Duis interdum purus quam, vitae cursus erat ornare at. Donec congue mi a ipsum tincidunt, imperdiet vehicula odio rutrum. Nam porta vulputate magna, id pretium lectus iaculis eu. Ut ut viverra libero.</p>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </div>
+
 @endsection
 
 @section('script')
@@ -368,108 +255,98 @@
         <script src="{{ asset('dist/js/app.min.js') }}"></script>
         <!-- AdminLTE for demo purposes -->
         <script src="{{ asset('dist/js/demo.js') }}"></script>
+
         <script type="text/javascript">
-          $(function() {
-            $("#tabel_makalah").DataTable({
-				"order": [[ 5, "desc" ]]
-			});
-            var areaChartData = {
-              labels: ["Skripsi"],
-              datasets: [
-				@if(Auth::user()->id_role!=2)
-                {
-                  label: "Plagiat",
-                  fillColor: "rgb(255, 133, 27)",
-                  strokeColor: "rgba(210, 214, 222, 0)",
-                  pointColor: "rgba(210, 214, 222, 1)",
-                  pointStrokeColor: "#c1c7d1",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [{{ $n_plagiat }}]
-                },
-                {
-                  label: "Lolos",
-                  fillColor: "rgb(0, 166, 90)",
-                  strokeColor: "rgba(210, 214, 222, 0)",
-                  pointColor: "rgba(210, 214, 222, 1)",
-                  pointStrokeColor: "#c1c7d1",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [{{ $n_lolos }}]
-                },
-				@endif
-                {
-                  label: "Diterima",
-                  fillColor: "rgb(0, 192, 239)",
-                  strokeColor: "rgba(210, 214, 222, 0)",
-                  pointColor: "rgba(210, 214, 222, 1)",
-                  pointStrokeColor: "#c1c7d1",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [{{ $n_diterima }}]
-                },
-                {
-                  label: "Revisi",
-                  fillColor: "rgb(243, 156, 18)",
-                  strokeColor: "rgba(210, 214, 222, 0)",
-                  pointColor: "rgba(210, 214, 222, 1)",
-                  pointStrokeColor: "#c1c7d1",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(220,220,220,1)",
-                  data: [{{ $n_revisi }}]
-                },
-                {
-                  label: "Ditolak",
-                  fillColor: "rgb(221, 75, 57)",
-                  strokeColor: "rgba(60,141,188,0)",
-                  pointColor: "#3b8bba",
-                  pointStrokeColor: "rgba(60,141,188,1)",
-                  pointHighlightFill: "#fff",
-                  pointHighlightStroke: "rgba(60,141,188,1)",
-                  data: [{{ $n_ditolak }}]
-                }
-              ]
-            };
-
-            //-------------
-            //- BAR CHART -
-            //-------------
-            var barChartCanvas = $("#barChart").get(0).getContext("2d");
-            var barChart = new Chart(barChartCanvas);
-            var barChartData = areaChartData;
-            barChartData.datasets[1].fillColor = "#00a65a";
-            barChartData.datasets[1].strokeColor = "#00a65a";
-            barChartData.datasets[1].pointColor = "#00a65a";
-            var barChartOptions = {
-              //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-              scaleBeginAtZero: true,
-              //Boolean - Whether grid lines are shown across the chart
-              scaleShowGridLines: true,
-              //String - Colour of the grid lines
-              scaleGridLineColor: "rgba(0,0,0,.05)",
-              //Number - Width of the grid lines
-              scaleGridLineWidth: 1,
-              //Boolean - Whether to show horizontal lines (except X axis)
-              scaleShowHorizontalLines: true,
-              //Boolean - Whether to show vertical lines (except Y axis)
-              scaleShowVerticalLines: true,
-              //Boolean - If there is a stroke on each bar
-              barShowStroke: true,
-              //Number - Pixel width of the bar stroke
-              barStrokeWidth: 2,
-              //Number - Spacing between each of the X value sets
-              barValueSpacing: 5,
-              //Number - Spacing between data sets within X values
-              barDatasetSpacing: 1,
-              //String - A legend template
-              legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
-              //Boolean - whether to make the chart responsive
-              responsive: true,
-              maintainAspectRatio: true
-            };
-
-            barChartOptions.datasetFill = false;
-            barChart.Bar(barChartData, barChartOptions);
+          $(document).ready(function(){
+        // invoke the carousel
+          $('#myCarousel').carousel({
+            interval:6000
           });
-        </script>
+
+        // scroll slides on mouse scroll
+        $('#myCarousel').bind('mousewheel DOMMouseScroll', function(e){
+
+              if(e.originalEvent.wheelDelta > 0 || e.originalEvent.detail < 0) {
+                  $(this).carousel('prev');
+
+
+              }
+              else{
+                  $(this).carousel('next');
+
+              }
+          });
+
+        //scroll slides on swipe for touch enabled devices
+
+        $("#myCarousel").on("touchstart", function(event){
+
+              var yClick = event.originalEvent.touches[0].pageY;
+            $(this).one("touchmove", function(event){
+
+              var yMove = event.originalEvent.touches[0].pageY;
+              if( Math.floor(yClick - yMove) > 1 ){
+                  $(".carousel").carousel('next');
+              }
+              else if( Math.floor(yClick - yMove) < -1 ){
+                  $(".carousel").carousel('prev');
+              }
+          });
+          $(".carousel").on("touchend", function(){
+                  $(this).off("touchmove");
+          });
+        });
+
+        });
+        //animated  carousel start
+        $(document).ready(function(){
+
+        //to add  start animation on load for first slide
+        $(function(){
+          $.fn.extend({
+            animateCss: function (animationName) {
+              var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+              this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass(animationName);
+              });
+            }
+          });
+             $('.item1.active img').animateCss('slideInDown');
+             $('.item1.active h2').animateCss('zoomIn');
+             $('.item1.active p').animateCss('fadeIn');
+
+        });
+
+        //to start animation on  mousescroll , click and swipe
+
+
+
+           $("#myCarousel").on('slide.bs.carousel', function () {
+          $.fn.extend({
+            animateCss: function (animationName) {
+              var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+              this.addClass('animated ' + animationName).one(animationEnd, function() {
+                $(this).removeClass(animationName);
+              });
+            }
+          });
+
+        // add animation type  from animate.css on the element which you want to animate
+
+          $('.item1 img').animateCss('slideInDown');
+          $('.item1 h2').animateCss('zoomIn');
+          $('.item1 p').animateCss('fadeIn');
+
+          $('.item2 img').animateCss('zoomIn');
+          $('.item2 h2').animateCss('swing');
+          $('.item2 p').animateCss('fadeIn');
+
+          $('.item3 img').animateCss('fadeInLeft');
+          $('.item3 h2').animateCss('fadeInDown');
+          $('.item3 p').animateCss('fadeIn');
+          });
+        });
+
+          </script>
+
 @endsection

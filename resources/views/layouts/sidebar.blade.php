@@ -11,7 +11,7 @@
                   <p>{{ ucwords(Auth::user()->name) }}</p>
                   <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
-              </div>    
+              </div>
               <!-- search form -->
               <form action="#" method="get" class="sidebar-form">
                 <div class="input-group">
@@ -26,7 +26,7 @@
               <ul class="sidebar-menu">
                 <li class="header">MAIN NAVIGATION</li>
                 @if(Auth::user()->status==1)
-                
+
                 <li class="{{ $active['profile'] or '' }}">
                   <a href="{{url('/profile')}}">
                     <i class="fa fa-user"></i>
@@ -34,15 +34,19 @@
                   </a>
                 </li>
 
-                
-                <li class="{{ $active['modul'] or '' }}">
+
+                <li @yield('mataKuliah')>
                   <a href="{{ url('/setting') }}">
                     <i class="fa fa-flask"></i> <span>Mata Kuliah</span><i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">
-                    <li class="{{ $active['makul'] or '' }}"><a href="{{url('makul/create')}}"><i class="fa fa-circle-o"></i> Input Mata Kuliah</a></li>
-                    <li class="{{ $active['modul'] or '' }}"><a href="{{url('modul/create')}}"><i class="fa fa-circle-o"></i> Input Modul</a></li>
-                    <li class="{{ $active['modul'] or '' }}"><a href="{{url('modul')}}"><i class="fa fa-circle-o"></i> Modul Pembelajaran</a></li>
+                    @if (Auth::user()->id_role!=3)
+                      <li @yield('inputMakul')><a href="{{url('makul/create')}}"><i class="fa fa-circle-o"></i> Input Mata Kuliah</a></li>
+                      <li @yield('inputModul')><a href="{{url('modul/create')}}"><i class="fa fa-circle-o"></i> Input Modul</a></li>
+                    @endif
+                    @if (Auth::user()->id_role!=2)
+                      <li @yield('modul')><a href="{{url('modul')}}"><i class="fa fa-circle-o"></i> Modul Pembelajaran</a></li>
+                    @endif
                   </ul>
                 </li>
 
@@ -51,7 +55,9 @@
                     <i class="fa fa-pencil"></i> <span>Tugas Mahasiswa</span> <i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">
-                    <li class="{{ $active['tugas'] or '' }}"><a href="{{url('tugas/create')}}"><i class="fa fa-circle-o"></i> Input Tugas</a></li>
+                    @if (Auth::user()->id_role!=2)
+                      <li class="{{ $active['tugas'] or '' }}"><a href="{{url('tugas/create')}}"><i class="fa fa-circle-o"></i> Input Tugas</a></li>
+                    @endif
                     <li class="{{ $active['tugas'] or '' }}"><a href="{{url('tugas')}}"><i class="fa fa-circle-o"></i> Lihat Tugas</a></li>
                   </ul>
                 </li>
@@ -63,47 +69,45 @@
                   <ul class="treeview-menu">
                     <li class="{{ $active['semua'] or '' }}">
                       <a href="{{ url('/makalah') }}">
-                        <i class="fa fa-circle-o"></i> 
-                        <span>Semua Kuis</span> 
+                        <i class="fa fa-circle-o"></i>
+                        <span>Semua Kuis</span>
                         <small class="label pull-right bg-green"></small>
                       </a>
                     </li>
                     @if(Auth::user()->id_role!=2)
                     <li class="{{ $active['makalahuser'] or '' }}">
                       <a href="{{ url('/makalahuser') }}">
-                        <i class="fa fa-circle-o"></i> 
-                        <span>Kuis Saya</span> 
+                        <i class="fa fa-circle-o"></i>
+                        <span>Kuis Saya</span>
                         <small class="label pull-right bg-green"></small>
                       </a>
                     </li>
                                         @endif
-                    <li class="{{ $active['direktori'] or '' }}">
+                    {{-- <li class="{{ $active['direktori'] or '' }}">
                       <a href="#"><i class="fa fa-circle-o"></i> Status Kuis<i class="fa fa-angle-left pull-right"></i></a>
                       <ul class="treeview-menu">
                         <li class="{{ $active['diterima'] or '' }}"><a href="{{ url('diterima') }}"><i class="fa fa-circle-o"></i> Diterima</a></li>
                         <li class="{{ $active['revisi'] or '' }}"><a href="{{ url('revisi') }}"><i class="fa fa-circle-o"></i> Revisi</a></li>
                         <li class="{{ $active['ditolak'] or '' }}"><a href="{{ url('ditolak') }}"><i class="fa fa-circle-o"></i> Ditolak</a></li>
                       </ul>
-                    </li>
-                    <li class="{{ $active['katmakalah'] or '' }}">
+                    </li> --}}
+                    {{-- <li class="{{ $active['katmakalah'] or '' }}">
                       <a href="#"><i class="fa fa-circle-o"></i> Kategori<i class="fa fa-angle-left pull-right"></i></a>
                       <ul class="treeview-menu">
-                        <?php
-                        $katma = DB::table('kategori')->get();
-                        ?>
+
                         @foreach($katma as $kat)
                           <li class="{{ $active['katma'.$kat->id_kategori] or '' }}"><a href="{{ url('katmakalah/'.$kat->id_kategori) }}"><i class="fa fa-circle-o"></i> {{ $kat->kategori }}</a></li>
                         @endforeach
                       </ul>
-                    </li>
+                    </li> --}}
                   </ul>
                 </li>
                 @if(Auth::user()->id_role==1)
-                <li class="{{ $active['plagiarisme'] or '' }}">
+                {{-- <li class="{{ $active['plagiarisme'] or '' }}">
                   <a href="{{ url('/setting') }}">
                     <i class="fa fa-cog"></i> <span>Settings Plagiarisme</span>
                   </a>
-                </li>
+                </li> --}}
                 <li class="{{ $active['pengguna'] or '' }} treeview">
                   <a href="#">
                     <i class="fa fa-users"></i> <span>User</span> <i class="fa fa-angle-left pull-right"></i>
@@ -113,7 +117,7 @@
                     <li class="{{ $active['mahasiswa'] or '' }}"><a href="{{url('mahasiswa')}}"><i class="fa fa-circle-o"></i> Mahasiswa</a></li>
                   </ul>
                 </li>
-                <li class="{{ $active['master'] or '' }} treeview">
+                {{-- <li class="{{ $active['master'] or '' }} treeview">
                   <a href="#">
                     <i class="fa fa-list"></i> <span>Data Master</span> <i class="fa fa-angle-left pull-right"></i>
                   </a>
@@ -121,11 +125,11 @@
                     <li class="{{ $active['stop_word'] or '' }}"><a href="{{url('stopword')}}"><i class="fa fa-circle-o"></i> Stop Word</a></li>
                     <li class="{{ $active['kategori'] or '' }}"><a href="{{url('kategori')}}"><i class="fa fa-circle-o"></i> Kategori</a></li>
                   </ul>
-                </li>
+                </li> --}}
 
                 @endif
                 @endif
-                
+
               </ul>
             </section>
             <!-- /.sidebar -->

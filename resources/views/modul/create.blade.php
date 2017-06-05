@@ -20,6 +20,9 @@
   {{ Auth::user()->name }}
 @endsection
 
+@section('mataKuliah','class=active')
+@section('inputModul','class=active')
+
 @section('content')
             <section class="content-header">
               <h1>
@@ -71,14 +74,14 @@
 							</div>
                         <div class="form-group {{ $errors->has('file') ? ' has-error' : '' }}">
                         <label for="file" >Upload Modul</label>
-                        
-                     
+
+
                           <input type="file" name="file" class="form-control" id="file">
-                       
+
                       </div>
-                        
+
                       </div><!-- /.box-body -->
-					  
+
                       <div class="box-footer">
                         <button type="submit" class="btn btn-primary">Simpan <i class="fa fa-save"></i></button>
                       </div>

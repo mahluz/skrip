@@ -31,14 +31,14 @@ class MakulController extends Controller
             'data' => 'active',
             'makul' => 'active',
             );
-        
+
         $mata_kuliah = DB::table('mata_kuliah')
-         
-		  
+
+
            ->select("*")
             ->get();
-			
-			
+
+
 
         return view('makul.kategori',['active' => $active, 'mata_kuliah' => $mata_kuliah]);
     }
@@ -50,7 +50,7 @@ class MakulController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->id_role!=1) {
+        if (Auth::user()->id_role!=1 && Auth::user()->id_role!=2) {
             return redirect('404');
         }
         $active = array(
@@ -76,14 +76,14 @@ class MakulController extends Controller
            'kode_makul' => 'required|max:255',
            'mata_kuliah'=> 'required|max:255',
             'sks'  => 'required|max:255|',
-          
+
         ]);
 
         $mata_kuliah = Makul ::create([
             'kode_makul' => $request->kode_makul,
             'mata_kuliah' => $request->mata_kuliah,
 			'sks' =>  $request->sks,
-          
+
         ]);
 
         Timeline::create([
@@ -114,8 +114,8 @@ class MakulController extends Controller
         $kategori = Kategori::find($id);
 
         return view('kategori.show',[
-            'active' => $active, 
-            'kategori' => $kategori, 
+            'active' => $active,
+            'kategori' => $kategori,
             'sub_judul' => 'Detail kategori'
             ]);
     }
@@ -139,12 +139,12 @@ class MakulController extends Controller
         $mata_kuliah = Makul::find($id);
 
         return view('makul.edit',[
-            'active' => $active, 
-            'makul' => $mata_kuliah, 
+            'active' => $active,
+            'makul' => $mata_kuliah,
             'sub_judul' => 'Edit Makul'
             ]);
     }
-	
+
   public function update(Request $request, $id)
     {
         if (Auth::user()->id_role!=1) {
@@ -152,7 +152,7 @@ class MakulController extends Controller
         }
         $mata_kuliah = Makul::find($id);
         $status = $mata_kuliah->update($request->all());
-        
+
         Timeline::create([
             'id_user' => Auth::user()->id_user,
             'aksi' => 'Melakukan perubahan data mata kuliah',
@@ -160,7 +160,7 @@ class MakulController extends Controller
         ]);
 
         return redirect("makul")->with('berhasil',$status?"berhasil":"gagal");
-    }	
+    }
 
     /**
      * Update the specified resource in storage.
@@ -169,7 +169,7 @@ class MakulController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-   
+
 
     /**
      * Remove the specified resource from storage.

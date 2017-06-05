@@ -20,6 +20,9 @@
   {{ Auth::user()->name }}
 @endsection
 
+@section('mataKuliah','class=active')
+@section('inputMakul','class=active')
+
 @section('content')
             <section class="content-header">
               <h1>
@@ -40,12 +43,12 @@
                   <div class="alert alert-danger alert-dismissable" id="gagal" style="display:none">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4><i class="icon fa fa-ban"></i> Gagal!</h4>
-                    Transaksi Gagal!
+                    Perintah Gagal!
                   </div>
                   <div class="alert alert-success alert-dismissable" id="berhasil" style="display:none">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                     <h4>  <i class="icon fa fa-check"></i> Sukses!</h4>
-                    Transaksi Berhasil!
+                    Perintah Berhasil!
                   </div>
                   <a href="{{ url('makul/create') }}" class="btn btn-default bg-green">Tambah Mata Kuliah <i class="fa fa-plus"></i></a>
                 </div>
@@ -66,11 +69,11 @@
                           <td>{{ $mata_kuliah->id_makul }}</td>
                           <td>{{ $mata_kuliah->kode_makul }}</td>
 						  <td>{{ $mata_kuliah->mata_kuliah}}</td>
-						 
+
 						  <td>{{ $mata_kuliah->sks }}</td>
-						
+
                           <td>
-                         
+
                              {!! Form::open([
                                 'method' => 'delete',
                                 'route' => ['makul.destroy',$mata_kuliah->id_makul],
@@ -88,7 +91,7 @@
                         <th>Id</th>
                         <th>Kode Makul</th>
                         <th>Mata Kuliah</th>
-						
+
 						<th>SKS</th>
 						<th>action</th>
                       </tr>

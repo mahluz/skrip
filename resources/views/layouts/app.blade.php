@@ -7,6 +7,15 @@
         <!-- Tell the browser to be responsive to screen width -->
         <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
         @yield('style')
+        <link href="https://fonts.googleapis.com/css?family=Sansita" rel="stylesheet">
+        <style media="screen">
+          html, body{
+             width:100%;
+             height:100%;
+             background-color:#fff;
+             font-family: 'Sansita', sans-serif;
+          }
+        </style>
     </head>
       <body class="hold-transition skin-blue sidebar-mini">
         <div class="wrapper">

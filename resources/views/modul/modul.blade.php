@@ -20,6 +20,9 @@
   {{ Auth::user()->name }}
 @endsection
 
+@section('mataKuliah','class=active')
+@section('modul','class=active')
+
 @section('content')
             <section class="content-header">
               <h1>
@@ -76,7 +79,7 @@
                                 'id' => 'formdelete'.$modul_pembelajaran->id_modul
                             ]) !!}
                             {!!Form::close()!!}
-                           
+
                             <a title="Delete" class="btn btn-xs btn-default" onclick="if(confirm('Apakah anda yakin akan menghapus mahasiswa {{ $modul_pembelajaran->id_modul }}?')){ $('#formdelete{{ $modul_pembelajaran->id_modul }}').submit(); }"><i class="fa fa-close"></i></a>
                           </td>
                         </tr>
